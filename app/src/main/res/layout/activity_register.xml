@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1C1C1C"
     android:orientation="vertical"
     android:padding="24dp"
-    android:gravity="center"
-    tools:context=".RegisterActivity">
+    android:gravity="center">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Registrarse con Teléfono"
+        android:text="Registrarse con Email"
         android:textColor="#FFFFFF"
         android:textSize="28sp"
         android:textStyle="bold"
-        android:layout_marginBottom="48dp"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_marginBottom="48dp"/>
 
     <EditText
         android:id="@+id/etRegisterUsername"
@@ -30,22 +26,18 @@
         android:textColor="#FFFFFF"
         android:textColorHint="#BBBBBB"
         android:backgroundTint="#FFFFFF"
-        android:drawableStart="@android:drawable/ic_menu_myplaces"
-        android:padding="10dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"/>
 
     <EditText
-        android:id="@+id/etPhoneNumber"
+        android:id="@+id/etRegisterEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="48dp"
-        android:hint="Número de Teléfono (Ej. +519XXXXXXXX)"
-        android:inputType="phone"
+        android:hint="Correo Electrónico"
+        android:inputType="textEmailAddress"
         android:textColor="#FFFFFF"
         android:textColorHint="#BBBBBB"
         android:backgroundTint="#FFFFFF"
-        android:drawableStart="@android:drawable/ic_menu_call"
-        android:padding="10dp"
         android:layout_marginBottom="16dp"/>
 
     <EditText
@@ -58,63 +50,24 @@
         android:textColor="#FFFFFF"
         android:textColorHint="#BBBBBB"
         android:backgroundTint="#FFFFFF"
-        android:drawableStart="@android:drawable/ic_lock_idle_lock"
-        android:padding="10dp"
-        android:layout_marginBottom="8dp" />
-
-    <EditText
-        android:id="@+id/etRegisterConfirmPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        android:hint="Confirmar Contraseña"
-        android:inputType="textPassword"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#BBBBBB"
-        android:backgroundTint="#FFFFFF"
-        android:drawableStart="@android:drawable/ic_lock_idle_lock"
-        android:padding="10dp"
-        android:layout_marginBottom="32dp" />
-
-    <EditText
-        android:id="@+id/etVerificationCode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="48dp"
-        android:hint="Código de Verificación"
-        android:inputType="number"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#BBBBBB"
-        android:backgroundTint="#FFFFFF"
-        android:drawableStart="@android:drawable/ic_lock_idle_lock"
-        android:padding="10dp"
-        android:layout_marginBottom="16dp"
-        android:visibility="gone"/> <Button
-    android:id="@+id/btnSendCode"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
-    android:background="#E50914"
-    android:text="Enviar Código y Registrar"
-    android:textColor="#FFFFFF"
-    android:textStyle="bold" />
+        android:layout_marginBottom="16dp"/>
 
     <Button
-        android:id="@+id/btnVerifyCode"
+        android:id="@+id/btnRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#E50914"
-        android:text="Verificar Código"
+        android:text="Registrarse"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
-        android:layout_marginBottom="16dp"
-        android:visibility="gone"/> <ProgressBar
-    android:id="@+id/progressBarRegister"
-    style="?android:attr/progressBarStyle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    android:visibility="gone"
-    android:indeterminateTint="#FFFFFF"/>
+        android:layout_marginBottom="16dp"/>
+
+    <ProgressBar
+        android:id="@+id/progressBarRegister"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:indeterminateTint="#FFFFFF"/>
 
 </LinearLayout>

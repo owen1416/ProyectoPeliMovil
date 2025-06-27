@@ -19,6 +19,11 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -81,6 +86,8 @@ dependencies {
 
 
     implementation("com.google.android.gms:play-services-auth:21.2.0")
+
+    implementation("com.google.firebase:firebase-auth")
 
      // O la versión más reciente@@@@
 }
