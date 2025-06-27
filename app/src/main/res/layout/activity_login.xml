@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/loginLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1C1C1C"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center">
+
+
+
+    <ImageView
+        android:id="@+id/imgLoginLogo"
+        android:layout_width="322dp"
+        android:layout_height="161dp"
+        android:layout_marginBottom="32dp"
+        android:contentDescription="Logo de Pelis Play"
+        android:src="@drawable/loginlogo" />
+
+    <EditText
+        android:id="@+id/etUsuario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:hint="Usuario"
+        android:inputType="text"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#BBBBBB"
+        android:backgroundTint="#FFFFFF"
+        android:drawableStart="@android:drawable/ic_menu_myplaces"
+        android:padding="10dp"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:hint="Contraseña"
+        android:inputType="textPassword"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#BBBBBB"
+        android:backgroundTint="#FFFFFF"
+        android:drawableStart="@android:drawable/ic_lock_idle_lock"
+        android:padding="10dp"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/tvOlvidarContrasena"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:paddingBottom="24dp"
+        android:text="¿Olvidaste tu contraseña?"
+        android:textColor="#E0D3D4"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="#E50914"
+        android:text="Iniciar sesión"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnGoogleSignIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:background="#4285F4" android:text="Iniciar sesión con Google"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:padding="10dp"
+        />
+    <TextView
+        android:id="@+id/tvRegistrarse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¿No tienes cuenta? Regístrate"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:textStyle="italic" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        android:indeterminateTint="#FFFFFF"/>
+
+</LinearLayout>

@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AdminPeliculasActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:titleTextColor="?attr/colorOnPrimary"
+            app:navigationIcon="@drawable/ic_menu" app:title="Panel de Administración" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Resumen General"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginBottom="16dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardTotalMovies"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    app:cardElevation="4dp"
+                    app:cardCornerRadius="8dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total de Películas"
+                            android:textSize="16sp"
+                            android:textColor="?android:attr/textColorSecondary"/>
+                        <TextView
+                            android:id="@+id/tvTotalMovies"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="150"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            android:textColor="?attr/colorPrimary"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardTotalUsers"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    app:cardElevation="4dp"
+                    app:cardCornerRadius="8dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total de Usuarios"
+                            android:textSize="16sp"
+                            android:textColor="?android:attr/textColorSecondary"/>
+                        <TextView
+                            android:id="@+id/tvTotalUsers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="500"
+                            android:textSize="28sp"
+                            android:textStyle="bold"
+                            android:textColor="?attr/colorSecondary"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Acciones Rápidas"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp"/>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:rowCount="3"
+                android:alignmentMode="alignMargins"
+                android:columnOrderPreserved="false"
+                android:padding="4dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btnAddNewMovie"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="8dp"
+                    app:cardElevation="4dp"
+                    app:cardCornerRadius="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="16dp">
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_add_movie" app:tint="?attr/colorPrimary" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Añadir Película"
+                            android:layout_marginTop="8dp"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:gravity="center"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btnManageMovies"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="8dp"
+                    app:cardElevation="4dp"
+                    app:cardCornerRadius="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="16dp">
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_movie_list" app:tint="?attr/colorPrimary" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gestionar Películas"
+                            android:layout_marginTop="8dp"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:gravity="center"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btnManageUsers"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="8dp"
+                    app:cardElevation="4dp"
+                    app:cardCornerRadius="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="16dp">
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_users" app:tint="?attr/colorPrimary" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gestionar Usuarios"
+                            android:layout_marginTop="8dp"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:gravity="center"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btnManageCategories"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="8dp"
+                    app:cardElevation="4dp"
+                    app:cardCornerRadius="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="16dp">
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_category" app:tint="?attr/colorPrimary" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Gestionar Categorías"
+                            android:layout_marginTop="8dp"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:gravity="center"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/btnReports"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="8dp"
+                    app:cardElevation="4dp"
+                    app:cardCornerRadius="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="16dp">
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/ic_report" app:tint="?attr/colorPrimary" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Reportes"
+                            android:layout_marginTop="8dp"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:gravity="center"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </GridLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Actividad Reciente"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:id="@+id/tvRecentActivityPlaceholder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No hay actividad reciente."
+                android:gravity="center"
+                android:padding="16dp"
+                android:visibility="gone" /> <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="8dp"
+            android:layout_marginBottom="8dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Película 'Título Nuevo' añadida."
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hace 5 minutos"
+                    android:textSize="12sp"
+                    android:textColor="?android:attr/textColorSecondary"/>
+                <Button
+                    android:id="@+id/btnLogout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cerrar Sesión"
+                    android:background="#E50914"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginTop="24dp"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
