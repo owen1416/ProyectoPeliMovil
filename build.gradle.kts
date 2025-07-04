@@ -4,6 +4,7 @@
             repositories {
                 google() // <--- MUY IMPORTANTE QUE ESTÉ AQUÍ TAMBIÉN
                 mavenCentral()
+
             }
             dependencies {
                 // Asegúrate de que tu versión de Android Gradle Plugin es la correcta

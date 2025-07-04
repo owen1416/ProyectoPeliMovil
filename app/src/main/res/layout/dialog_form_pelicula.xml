@@ -4,72 +4,123 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/netflix_dark"
-    android:padding="16dp">
+    android:background="@color/white"
+    android:padding="32dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_titulo_pelicula"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:hint="Título de la Película"
-            android:textColorHint="@color/ivory"
-            app:boxStrokeColor="@color/nude"
-            app:hintTextColor="@color/nude">
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="40dp">
 
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_movie_list"
+                app:tint="@color/purple_primary"
+                android:layout_marginEnd="20dp"/>
+
+            <TextView
+                android:id="@+id/tv_dialog_pelicula_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Formulario de Película"
+                android:textColor="@color/black"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_dialog_pelicula_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ID: [ID de Película]"
+            android:textColor="@color/dark_gray"
+            android:textSize="14sp"
+            android:layout_marginBottom="36dp"
+            android:visibility="gone" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_titulo_pelicula"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Título de la Película"
+            android:textColorHint="@color/black"
+            app:boxStrokeColor="@color/black"
+            app:hintTextColor="@color/black"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxStrokeWidth="2dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="36dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_titulo_pelicula"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapSentences"
-                android:textColor="@color/ivory" />
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:paddingVertical="18dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_descripcion_pelicula"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
             android:hint="Descripción"
-            android:textColorHint="@color/ivory"
-            app:boxStrokeColor="@color/nude"
-            app:hintTextColor="@color/nude">
-
+            android:textColorHint="@color/black"
+            app:boxStrokeColor="@color/black"
+            app:hintTextColor="@color/black"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxStrokeWidth="2dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="36dp">
             <com.google.android.material.textfield.TextInputEditText
-                android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/et_descripcion_pelicula"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
                 android:lines="3"
                 android:gravity="top|start"
-                android:textColor="@color/ivory" />
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:paddingVertical="18dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="36dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_anio_pelicula"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="16dp"
                 android:hint="Año"
-                android:textColorHint="@color/ivory"
-                app:boxStrokeColor="@color/nude"
-                app:hintTextColor="@color/nude">
+                android:textColorHint="@color/black"
+                app:boxStrokeColor="@color/black"
+                app:hintTextColor="@color/black"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxStrokeWidth="2dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_anio_pelicula"
@@ -77,60 +128,81 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:maxLength="4"
-                    android:textColor="@color/ivory" />
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    android:paddingVertical="18dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_duracion_pelicula"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="Duración (min)"
-                android:textColorHint="@color/ivory"
-                app:boxStrokeColor="@color/nude"
-                app:hintTextColor="@color/nude">
+                android:textColorHint="@color/black"
+                app:boxStrokeColor="@color/black"
+                app:hintTextColor="@color/black"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxStrokeWidth="2dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_duracion_pelicula"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:textColor="@color/ivory" />
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    android:paddingVertical="18dp" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_director_pelicula"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
             android:hint="Director"
-            android:textColorHint="@color/ivory"
-            app:boxStrokeColor="@color/nude"
-            app:hintTextColor="@color/nude">
-
+            android:textColorHint="@color/black"
+            app:boxStrokeColor="@color/black"
+            app:hintTextColor="@color/black"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxStrokeWidth="2dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="36dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_director_pelicula"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:textColor="@color/ivory" />
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:paddingVertical="18dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_fecha_lanzamiento_pelicula"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
             android:hint="Fecha de Lanzamiento (YYYY-MM-DD)"
-            android:textColorHint="@color/ivory"
-            app:boxStrokeColor="@color/nude"
-            app:hintTextColor="@color/nude"
+            android:textColorHint="@color/black"
+            app:boxStrokeColor="@color/black"
+            app:hintTextColor="@color/black"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxStrokeWidth="2dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="36dp"
             app:endIconDrawable="@drawable/ic_calendar"
-            app:endIconMode="custom">
+            app:endIconMode="custom"
+            app:endIconTint="@color/black">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_fecha_lanzamiento_pelicula"
@@ -139,65 +211,86 @@
                 android:inputType="date"
                 android:focusable="false"
                 android:clickable="true"
-                android:textColor="@color/ivory" />
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:paddingVertical="18dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Combobox para Género -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_genero_pelicula"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
             android:hint="Género"
-            android:textColorHint="@color/ivory"
-            app:boxStrokeColor="@color/nude"
-            app:hintTextColor="@color/nude">
+            android:textColorHint="@color/black"
+            app:boxStrokeColor="@color/black"
+            app:hintTextColor="@color/black"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxStrokeWidth="2dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_marginBottom="36dp">
 
             <AutoCompleteTextView
                 android:id="@+id/actv_genero_pelicula"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none"
-                android:textColor="@color/ivory" />
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:paddingVertical="18dp" />
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_image_url_pelicula"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
             android:hint="URL del Póster"
-            android:textColorHint="@color/ivory"
-            app:boxStrokeColor="@color/nude"
-            app:hintTextColor="@color/nude">
-
+            android:textColorHint="@color/black"
+            app:boxStrokeColor="@color/black"
+            app:hintTextColor="@color/black"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxStrokeWidth="2dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="36dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_image_url_pelicula"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textUri"
-                android:textColor="@color/ivory" />
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:paddingVertical="18dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_trailer_url_pelicula"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
             android:hint="URL del Tráiler (YouTube)"
-            android:textColorHint="@color/ivory"
-            app:boxStrokeColor="@color/nude"
-            app:hintTextColor="@color/nude">
-
+            android:textColorHint="@color/black"
+            app:boxStrokeColor="@color/black"
+            app:hintTextColor="@color/black"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxStrokeWidth="2dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="36dp">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_trailer_url_pelicula"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textUri"
-                android:textColor="@color/ivory" />
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:paddingVertical="18dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>

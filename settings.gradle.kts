@@ -10,8 +10,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://jitpack.io") } // ¡Sintaxis correcta para Kotlin DSL!
     }
 }
 
-rootProject.name = "ProyectoPelis"
+rootProject.name = "ProyectoPelis" // Asegúrate de que este sea el nombre de tu proyecto
 include(":app")

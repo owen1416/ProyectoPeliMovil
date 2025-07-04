@@ -32,6 +32,7 @@
         <activity android:name=".GenerosActivity" />
         <activity android:name=".PeliculasActivity" />
         <activity android:name=".UserManagementActivity" />
+        <activity android:name=".ReportsActivity" />
 
 
 

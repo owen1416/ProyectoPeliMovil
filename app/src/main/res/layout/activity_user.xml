@@ -2,90 +2,98 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/netflix_dark"
-    tools:context=".UserManagementActivity">
+    android:background="@android:color/white">
 
-    <!-- AppBarLayout contiene la Toolbar y maneja el comportamiento de desplazamiento -->
+    <!-- AppBar con degradado morado -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:liftOnScroll="true">
+        app:liftOnScroll="true"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar">
 
-        <!-- Toolbar para el título de la actividad y el botón de navegación -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_user_management"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:title="Gestión de Usuarios"
-            app:titleTextColor="@color/ivory"
-            app:navigationIcon="@drawable/ic_arrow_back"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
+            app:titleTextColor="@android:color/white"
+            android:elevation="4dp"
+            app:navigationIcon="@drawable/ic_arrow_back"/>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Contenedor principal para el contenido de la actividad, se desplaza debajo de la AppBar -->
+    <!-- Contenido principal -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:padding="16dp">
+        android:padding="24dp">
 
-        <!-- Botón para agregar un nuevo usuario, similar a "Agregar nuevo género" -->
-        <Button
+        <!-- Botón "Agregar nuevo usuario" -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_crear_usuario"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="#E50914"
-            android:drawableStart="@drawable/ic_add"
-            android:drawablePadding="8dp"
-            android:padding="12dp"
+            android:layout_marginBottom="16dp"
+            app:icon="@drawable/ic_add"
+            app:iconTint="@android:color/white"
+            app:iconPadding="12dp"
+            app:cornerRadius="12dp"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
             android:text="Agregar nuevo usuario"
-            android:textColor="@color/netflix_dark"
-            android:textStyle="bold" />
+            android:textColor="@android:color/white"/>
 
+        <!-- Botón "Recargar usuarios" -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_recargar_usuarios"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            app:cornerRadius="12dp"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:text="🔄 Recargar usuarios"
+            android:textColor="@android:color/white"/>
 
-
-        <!-- Campo de texto para buscar usuarios, similar a "Buscar género" -->
+        <!-- Campo de búsqueda -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_search_user"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Buscar usuario..."
-            android:textColorHint="@color/ivory"
-            app:boxStrokeColor="@color/nude"
-            app:hintTextColor="@color/nude"
+            app:boxStrokeColor="@color/purple_700"
+            app:boxStrokeWidth="2dp"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusBottomEnd="16dp"
             app:endIconMode="clear_text"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_marginBottom="12dp">
+            app:endIconTint="@color/purple_700"
+            android:layout_marginBottom="24dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_search_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@color/ivory" />
-
+                android:textColor="@android:color/black"
+                android:textSize="17sp"
+                android:paddingVertical="18dp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- RecyclerView para mostrar la lista de usuarios -->
+        <!-- RecyclerView para lista de usuarios -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_users"
-            android:layout_width="392dp"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:clipToPadding="false"
-            android:paddingTop="8dp"
-            tools:listitem="@layout/item_user" />
-
+            android:padding="8dp"/>
     </LinearLayout>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

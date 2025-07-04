@@ -1,74 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@color/netflix_dark"
-    tools:context=".GenerosActivity"> <TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="🎨 Administración de Géneros"
-    android:textSize="22sp"
-    android:textStyle="bold"
-    android:textColor="@color/ivory"
-    android:layout_marginBottom="12dp" />
+    android:background="@color/white"
+    tools:context=".GenerosActivity">
 
-    <Button
-        android:id="@+id/btn_crear_genero"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:background="#E50914"
-        android:drawableStart="@drawable/ic_add"
-        android:drawablePadding="8dp"
-        android:padding="12dp"
-        android:text="Agregar nuevo género"
-        android:textColor="@color/netflix_dark"
-        android:textStyle="bold" />
+        app:liftOnScroll="true"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+        app:elevation="4dp">
 
-    <Button
-        android:id="@+id/btn_leer_generos"
-        android:layout_width="381dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:background="#E50914"
-        android:text="🔄 Recargar géneros"
-        android:textColor="@color/netflix_dark" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_generos"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:title="Administración de Géneros"
+            app:titleTextColor="@color/ivory"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+    </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_search_genero"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Buscar género..."
-        android:textColorHint="@color/ivory"
-        app:boxStrokeColor="@color/nude"
-        app:hintTextColor="@color/nude"
-        app:endIconMode="clear_text"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-        android:layout_marginBottom="12dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:padding="24dp">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_search_genero"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_crear_genero"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:textColor="@color/ivory" />
+            android:layout_marginBottom="16dp"
+            app:icon="@drawable/ic_add"
+            app:iconTint="@color/white"
+            app:iconPadding="12dp"
+            app:cornerRadius="12dp"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:text="Agregar nuevo género"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
-    </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_leer_generos"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:text="🔄 Recargar géneros"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:cornerRadius="12dp" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_generos"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingTop="8dp"
-        android:clipToPadding="false"
-        tools:listitem="@layout/item_genero" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_search_genero"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Buscar género..."
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidth="2dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/black"
+            android:layout_marginBottom="24dp">
 
-</LinearLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_search_genero"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:paddingVertical="18dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_generos"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingTop="12dp"
+            tools:listitem="@layout/item_genero"
+            android:background="@color/white"
+            android:paddingHorizontal="8dp"
+            android:paddingBottom="8dp"/>
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

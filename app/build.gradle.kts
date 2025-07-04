@@ -2,18 +2,18 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.gms.google-services")
-    id("kotlin-parcelize")
+    id("kotlin-parcelize") // Necesario para Parcelable
 
 }
 
 android {
     namespace = "com.example.proyectopelis"
-    compileSdk = 35
+    compileSdk = 35 // Manteniendo tu versión de compileSdk
 
     defaultConfig {
         applicationId = "com.example.proyectopelis"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 35 // Manteniendo tu versión de targetSdk
         versionCode = 1
         versionName = "1.0"
 
@@ -35,65 +35,58 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_11 // Manteniendo tu versión de Java
+        targetCompatibility = JavaVersion.VERSION_11 // Manteniendo tu versión de Java
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "11" // Manteniendo tu versión de JVM Target
     }
 }
 
 dependencies {
 
-
-    implementation("com.github.bumptech.glide:glide:4.16.0")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
-    implementation("com.google.android.material:material:1.x.x")
-    implementation("com.google.android.gms:play-services-auth:21.2.0")
-// ... tus otras dependencias (Firebase Auth, etc.)
-    implementation("com.google.firebase:firebase-firestore:25.0.0")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    // Core AndroidX Libraries (preferimos los aliases de libs.versions.toml si están definidos y actualizados)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+    implementation(libs.material) // Asumiendo que libs.material es 1.11.0 o más reciente
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.firebase.firestore.ktx)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-
-    // Dependencias existentes...
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation ("androidx.appcompat:appcompat:1.6.1")
-    implementation ("com.google.android.material:material:1.11.0")
-    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
-
-    // Dependencias para Retrofit
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    // Convertidor de JSON a objetos Kotlin (Gson)
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-
-    // Dependencia para Corrutinas (útil para manejar las llamadas de red)
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2") // Para ViewModelScope si usas ViewModels
-
-    testImplementation ("junit:junit:4.13.2")
-    androidTestImplementation ("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
 
     // Firebase Platform (BOM) - ¡IMPORTANTE para versiones compatibles!
-    implementation(platform("com.google.firebase:firebase-bom:32.7.4")) // <<< Asegúrate de usar la última BOM
+    // Usamos la BOM para gestionar las versiones de Firebase de forma consistente.
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0")) // Usamos la última BOM de la conversación anterior
 
     // Firebase Authentication (para login/registro)
     implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.android.gms:play-services-auth:21.2.0") // Para Google Sign-In
 
-    // Firebase Analytics (opcional)
+    // Firebase Firestore
+    implementation("com.google.firebase:firebase-firestore-ktx") // Versión KTX para Kotlin
+
+    // Firebase Storage (para subir imágenes, si lo usas)
+    implementation("com.google.firebase:firebase-storage-ktx") // <--- AÑADIDO: Firebase Storage
+
+    // Firebase Analytics (opcional, si lo necesitas para seguimiento)
     implementation("com.google.firebase:firebase-analytics-ktx")
 
+    // Glide para cargar imágenes
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
-    implementation("com.google.android.gms:play-services-auth:21.2.0")
+    // MPAndroidChart para gráficas
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0") // <--- AÑADIDO: MPAndroidChart
 
-    implementation("com.google.firebase:firebase-auth")
+    // Dependencias para Retrofit (para llamadas a API externas)
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
-     // O la versión más reciente@@@@
+    // Dependencias para Corrutinas (útil para manejar las llamadas de red asíncronas)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2") // Para ViewModelScope si usas ViewModels
+
+    // Testing Libraries
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
 }

@@ -1,31 +1,41 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Tema oscuro personalizado -->
-    <style name="Theme.ProyectoPelis." parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Fondo negro estilo Netflix -->
-        <item name="android:windowBackground">#121212</item>
-        <item name="android:colorBackground">#121212</item>
-        <item name="android:statusBarColor">#121212</item>
-        <item name="android:navigationBarColor">#121212</item>
-
-        <!-- Paleta de colores -->
-        <item name="colorPrimary">#D7A49A</item> <!-- Dusty Rose -->
-        <item name="colorPrimaryContainer">#E4C9B6</item> <!-- Nude -->
-        <item name="colorSecondary">#A4B1BA</item> <!-- Baby Blue -->
-        <item name="colorOnPrimary">#121212</item> <!-- Texto sobre botones -->
-        <item name="colorOnBackground">#E1DAD3</item> <!-- Ivory para texto -->
-        <item name="colorOnSurface">#E1DAD3</item>
-        <item name="android:textColorPrimary">#E1DAD3</item>
-
-        <!-- Botones -->
-        <item name="materialButtonStyle">@style/Widget.PelisPlay.Button</item>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tu tema principal de la aplicación -->
+    <style name="Theme.ProyectoPelis" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Colores de tu aplicación -->
+        <item name="colorPrimary">@color/purple_primary</item>
+        <item name="colorPrimaryVariant">@color/purple_dark</item>
+        <item name="colorOnPrimary">@color/ivory</item>
+        <item name="colorSecondary">@color/baby_blue</item>
+        <!-- <item name="colorSecondaryVariant">@color/dusty_rose</colorSecondaryVariant> --> <!-- Eliminado para evitar el error -->
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Aquí se aplica el tema personalizado para todos los AlertDialogs de Material Components -->
+        <item name="alertDialogTheme">@style/Theme.App.AlertDialog</item>
     </style>
 
-    <style name="Theme.PelisPlay" parent="Theme.ProyectoPelis" />
+    <!-- Estilo para los AlertDialogs -->
+    <style name="Theme.App.AlertDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <!-- Fondo del área de contenido del diálogo (tu dialog_pelicula_form.xml) -->
+        <item name="android:windowBackground">@color/white</item>
 
-    <!-- Botón personalizado -->
-    <style name="Widget.PelisPlay.Button" parent="Widget.Material3.Button">
-        <item name="backgroundTint">#E4C9B6</item>
-        <item name="android:textColor">#121212</item>
-        <item name="cornerRadius">12dp</item>
+        <!-- Color de las "superficies" del diálogo, incluyendo el fondo del título y la barra de botones -->
+        <item name="colorSurface">@color/black</item>
+        <item name="android:colorBackground">@color/black</item> <!-- Para asegurar compatibilidad -->
+
+        <!-- Color del texto del título del diálogo -->
+        <item name="android:textColorPrimary">@color/white</item> <!-- Texto del título blanco para contrastar con fondo negro -->
+
+        <!-- Estilo para los botones del diálogo (Positivo/Negativo) -->
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.App.Button.AlertDialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.App.Button.AlertDialog</item>
     </style>
+
+    <!-- Estilo personalizado para los botones de acción del AlertDialog -->
+    <style name="Widget.App.Button.AlertDialog" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/white</item> <!-- Texto de los botones en blanco para contrastar con fondo negro -->
+        <!-- Opcional: Puedes añadir un color de tinta de fondo si quieres que los botones tengan un color de fondo sutil -->
+        <!-- <item name="backgroundTint">@color/black</item> -->
+    </style>
+
 </resources>
