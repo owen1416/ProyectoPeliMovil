@@ -19,12 +19,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.firestore.FirebaseFirestore // Importar Firestore
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var googleSignInLauncher: ActivityResultLauncher<Intent>
+    private lateinit var db: FirebaseFirestore // Declarar instancia de Firestore
 
     private lateinit var etUsuario: EditText
     private lateinit var etPassword: EditText
@@ -39,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance() // Inicializar Firestore aquí
 
         // Asocia las vistas con sus IDs del XML
         etUsuario = findViewById(R.id.etUsuario)
@@ -101,10 +104,14 @@ class LoginActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         val user = auth.currentUser
                         Toast.makeText(this, "Bienvenido, ${user?.email}", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this, AdminPeliculasActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
-                        finish()
+                        // LLAMADA CLAVE: Leer el rol de Firestore
+                        user?.let { readUserRoleAndRedirect(it.uid) } ?: run {
+                            // En caso de que user sea null inesperadamente
+                            Toast.makeText(this, "Error: No se pudo obtener el usuario.", Toast.LENGTH_SHORT).show()
+                            // Puedes redirigir a una pantalla por defecto o quedarse en el login
+                            // startActivity(Intent(this, GeneralUserActivity::class.java))
+                            // finish()
+                        }
                     } else {
                         val errorMessage = when (task.exception) {
                             is FirebaseAuthInvalidUserException -> "Usuario no registrado o deshabilitado."
@@ -150,27 +157,82 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     Toast.makeText(this, "Bienvenido con Google, ${user?.displayName ?: user?.email}", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, AdminPeliculasActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                    finish()
+                    // LLAMADA CLAVE: Leer el rol de Firestore para usuarios de Google
+                    user?.let { readUserRoleAndRedirect(it.uid) } ?: run {
+                        // En caso de que user sea null inesperadamente
+                        Toast.makeText(this, "Error: No se pudo obtener el usuario de Google.", Toast.LENGTH_SHORT).show()
+                        // Puedes redirigir a una pantalla por defecto o quedarse en el login
+                        // startActivity(Intent(this, GeneralUserActivity::class.java))
+                        // finish()
+                    }
                 } else {
                     Toast.makeText(this, "Error de autenticación con Firebase (Google): ${task.exception?.message}", Toast.LENGTH_LONG).show()
                 }
             }
     }
 
+    // --- NUEVA FUNCIÓN PARA LEER EL ROL DE FIRESTORE Y REDIRIGIR ---
+    private fun readUserRoleAndRedirect(uid: String) {
+        db.collection("userRoles").document(uid).get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val document = task.result
+                    var userRole = "default" // Rol por defecto si no se encuentra
+
+                    if (document != null && document.exists()) {
+                        // Asegúrate de que el nombre del campo 'role' coincide con el de tu Firestore
+                        val roleFromFirestore = document.getString("role")
+                        if (roleFromFirestore != null) {
+                            userRole = roleFromFirestore
+                            // Log para depuración
+                            println("Rol del usuario de Firestore: $userRole para UID: $uid")
+                        } else {
+                            println("Campo 'role' no encontrado o no es String en el documento para UID: $uid")
+                        }
+                    } else {
+                        println("Documento de usuario no encontrado en 'userRoles' para UID: $uid. Asignando rol por defecto.")
+                        // Aquí podrías decidir si quieres crear un documento con rol "user" por defecto
+                        // si no existe, aunque lo ideal es que lo haga una Cloud Function al registrarse.
+                        // db.collection("userRoles").document(uid).set(mapOf("role" to "user", "email" to auth.currentUser?.email))
+                    }
+                    redirectToScreenByRole(userRole)
+                } else {
+                    // Manejar error de lectura de Firestore
+                    println("Error al obtener el rol del usuario de Firestore: ${task.exception?.message}")
+                    Toast.makeText(this, "Error al obtener rol de usuario. Redirigiendo a pantalla por defecto.", Toast.LENGTH_LONG).show()
+                    redirectToScreenByRole("default") // Redirigir a una pantalla genérica en caso de error
+                }
+            }
+    }
+
+    // --- NUEVA FUNCIÓN PARA REDIRIGIR BASADO EN EL ROL ---
+    private fun redirectToScreenByRole(role: String) {
+        val intent: Intent
+        when (role) {
+            "admin" -> {
+                intent = Intent(this, AdminDashboard::class.java)
+            }
+            "user" -> {
+                intent = Intent(this, UserDashboardActivity::class.java) // Crea esta actividad
+            }
+
+            else -> { // Para "default" o cualquier otro rol no reconocido
+                intent = Intent(this, UserDashboardActivity::class.java) // Crea esta actividad
+            }
+        }
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+    }
+
     // ESTA LÓGICA ES LA QUE PERMITE EL AUTO-LOGIN SI YA HAY UNA SESIÓN ACTIVA.
-    // Es deseable para una buena UX, pero debes entender que hace que no veas el Login
-    // si ya hay un usuario logueado.
+    // La modificaremos para que también lea el rol.
     override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            val intent = Intent(this, AdminPeliculasActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-            finish()
+            // Si ya hay un usuario logueado, leer su rol y redirigir
+            readUserRoleAndRedirect(currentUser.uid)
         }
     }
 }

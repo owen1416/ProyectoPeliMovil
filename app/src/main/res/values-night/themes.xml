@@ -1,7 +1,31 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.ProyectoPelis" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <!-- Tema oscuro personalizado -->
+    <style name="Theme.ProyectoPelis." parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Fondo negro estilo Netflix -->
+        <item name="android:windowBackground">#121212</item>
+        <item name="android:colorBackground">#121212</item>
+        <item name="android:statusBarColor">#121212</item>
+        <item name="android:navigationBarColor">#121212</item>
+
+        <!-- Paleta de colores -->
+        <item name="colorPrimary">#D7A49A</item> <!-- Dusty Rose -->
+        <item name="colorPrimaryContainer">#E4C9B6</item> <!-- Nude -->
+        <item name="colorSecondary">#A4B1BA</item> <!-- Baby Blue -->
+        <item name="colorOnPrimary">#121212</item> <!-- Texto sobre botones -->
+        <item name="colorOnBackground">#E1DAD3</item> <!-- Ivory para texto -->
+        <item name="colorOnSurface">#E1DAD3</item>
+        <item name="android:textColorPrimary">#E1DAD3</item>
+
+        <!-- Botones -->
+        <item name="materialButtonStyle">@style/Widget.PelisPlay.Button</item>
+    </style>
+
+    <style name="Theme.PelisPlay" parent="Theme.ProyectoPelis" />
+
+    <!-- Botón personalizado -->
+    <style name="Widget.PelisPlay.Button" parent="Widget.Material3.Button">
+        <item name="backgroundTint">#E4C9B6</item>
+        <item name="android:textColor">#121212</item>
+        <item name="cornerRadius">12dp</item>
     </style>
 </resources>

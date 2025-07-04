@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/netflix_dark"
+    tools:context=".UserManagementActivity">
+
+    <!-- AppBarLayout contiene la Toolbar y maneja el comportamiento de desplazamiento -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:liftOnScroll="true">
+
+        <!-- Toolbar para el título de la actividad y el botón de navegación -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_user_management"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:title="Gestión de Usuarios"
+            app:titleTextColor="@color/ivory"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Contenedor principal para el contenido de la actividad, se desplaza debajo de la AppBar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:padding="16dp">
+
+        <!-- Botón para agregar un nuevo usuario, similar a "Agregar nuevo género" -->
+        <Button
+            android:id="@+id/btn_crear_usuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="#E50914"
+            android:drawableStart="@drawable/ic_add"
+            android:drawablePadding="8dp"
+            android:padding="12dp"
+            android:text="Agregar nuevo usuario"
+            android:textColor="@color/netflix_dark"
+            android:textStyle="bold" />
+
+
+
+        <!-- Campo de texto para buscar usuarios, similar a "Buscar género" -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_search_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Buscar usuario..."
+            android:textColorHint="@color/ivory"
+            app:boxStrokeColor="@color/nude"
+            app:hintTextColor="@color/nude"
+            app:endIconMode="clear_text"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_search_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/ivory" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- RecyclerView para mostrar la lista de usuarios -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_users"
+            android:layout_width="392dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingTop="8dp"
+            tools:listitem="@layout/item_user" />
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

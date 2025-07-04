@@ -21,12 +21,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AdminPeliculasActivity" />
+        <activity android:name=".AdminDashboard" />
 
         <activity
             android:name=".RegisterActivity"
             android:exported="false">
         </activity>
+
+        <activity android:name=".UserDashboardActivity" />
+        <activity android:name=".GenerosActivity" />
+        <activity android:name=".PeliculasActivity" />
+        <activity android:name=".UserManagementActivity" />
 
 
 

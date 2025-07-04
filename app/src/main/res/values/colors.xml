@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Colores básicos -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Paleta personalizada (ajusta si ya tienes otros) -->
+    <color name="ivory">#E1DAD3</color>
+    <color name="nude">#E4C9B6</color>
+    <color name="dusty_rose">#D7A49A</color>
+    <color name="sage">#A8B59F</color>
+    <color name="baby_blue">#A4B1BA</color>
+
+    <!-- Estilo tipo Netflix -->
+    <color name="netflix_dark">#141414</color>
+    <color name="netflix_card">#1F1F1F</color>
+    <color name="dark_gray">#333333</color>
+    <color name="light_gray">#AAAAAA</color>
+
 </resources>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Usamos un LinearLayout como raíz para replicar la estructura de item_genero -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:background="@drawable/card_background"
+    android:gravity="center_vertical"
+    android:layout_marginBottom="6dp">
+
+<LinearLayout
+android:layout_width="0dp"
+android:layout_height="wrap_content"
+android:layout_weight="1"
+android:orientation="vertical">
+
+<!-- Nombre de Usuario (equivalente a Nombre del Género) -->
+<TextView
+    android:id="@+id/tv_username_item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Nombre de Usuario"
+    android:textStyle="bold"
+    android:textColor="@color/ivory"
+    android:textSize="16sp" />
+
+<!-- Email del Usuario -->
+<TextView
+    android:id="@+id/tv_user_email"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="email@ejemplo.com"
+    android:textColor="@color/nude"
+    android:textSize="14sp" />
+
+<!-- Rol del Usuario -->
+<TextView
+    android:id="@+id/tv_user_role"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Rol: admin"
+    android:textColor="@color/nude"
+    android:textSize="14sp"
+    android:textStyle="italic" />
+
+
+<TextView
+    android:id="@+id/tv_user_id"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="ID: [UID del usuario]"
+    android:textColor="@color/nude"
+    android:textSize="12sp"
+    android:visibility="gone" />
+
+</LinearLayout>
+
+
+<ImageButton
+android:id="@+id/btn_edit_user_role"
+android:layout_width="48dp"
+android:layout_height="48dp"
+android:padding="8dp"
+android:src="@drawable/ic_edit"
+android:background="?selectableItemBackgroundBorderless"
+android:contentDescription="Editar rol de usuario"
+app:tint="@color/baby_blue"
+    android:layout_marginStart="6dp" />
+
+    <!-- Botón de Eliminar Usuario (equivalente a iv_delete_genero) -->
+<ImageButton
+android:id="@+id/btn_delete_user"
+android:layout_width="48dp"
+android:layout_height="48dp"
+android:padding="8dp"
+android:src="@drawable/ic_delete"
+android:background="?selectableItemBackgroundBorderless"
+android:contentDescription="Eliminar usuario"
+app:tint="@color/dusty_rose"
+    android:layout_marginStart="4dp" />
+    </LinearLayout>

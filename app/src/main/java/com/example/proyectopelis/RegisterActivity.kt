@@ -1,26 +1,40 @@
-package com.example.proyectopelis // ASEGÚRATE DE QUE ESTE SEA TU NOMBRE DE PAQUETE REAL
+package com.example.proyectopelis
 
-import android.content.Intent // Importa Intent para la redirección
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log // Importar Log para depuración
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.proyectopelis.databinding.ActivityRegisterBinding // ASEGÚRATE DE QUE ESTE SEA TU ARCHIVO DE BINDING REAL
-import com.google.firebase.auth.FirebaseAuth
+import com.example.proyectopelis.databinding.ActivityRegisterBinding
+import com.google.firebase.auth.FirebaseAuth // Este es el SDK de cliente
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
+// NO NECESITAS ESTAS IMPORTACIONES DEL ADMIN SDK SI LO VAMOS A QUITAR
+// import com.google.firebase.FirebaseApp
+// import com.google.firebase.FirebaseOptions
+// import java.io.InputStream
+// import com.google.firebase.auth.FirebaseAuth as FirebaseAuthAdmin
+
+import com.google.firebase.firestore.FirebaseFirestore // PARA ESCRIBIR EN FIRESTORE CON EL SDK CLIENTE
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
-    private lateinit var auth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth // FirebaseAuth del cliente SDK
+    private lateinit var db: FirebaseFirestore // Firestore del cliente SDK
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        auth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance() // Inicializa Auth del cliente
+        db = FirebaseFirestore.getInstance() // Inicializa Firestore del cliente
+
+        // **HE ELIMINADO TODA LA INICIALIZACIÓN DEL FIREBASE ADMIN SDK DE AQUÍ.**
+        // Esto soluciona los errores que tenías con .setCredentials y FirebaseApp.getApps(this).isEmpty()
+        // porque ya no intentaremos inicializar el Admin SDK en el cliente.
 
         binding.btnRegister.setOnClickListener {
             val username = binding.etRegisterUsername.text.toString().trim()
@@ -60,48 +74,57 @@ class RegisterActivity : AppCompatActivity() {
                         user.updateProfile(profileUpdates)
                             .addOnCompleteListener { profileTask ->
                                 if (profileTask.isSuccessful) {
+                                    Log.d("Register", "Registro exitoso y perfil actualizado.")
                                     Toast.makeText(this, "Registro exitoso y perfil actualizado.", Toast.LENGTH_LONG).show()
-                                    // REDIRECCIÓN A LOGIN ACTIVITY
-                                    val intent = Intent(this, LoginActivity::class.java) // <--- ¡CAMBIO AQUÍ!
-                                    startActivity(intent)
-                                    finish() // Finaliza RegisterActivity para que el usuario no pueda volver con el botón atrás
+
+                                    // **NUEVO CÓDIGO: ASIGNAR ROL EN FIRESTORE (AHORA USANDO SOLO EL SDK CLIENTE)**
+                                    // HEMOS ELIMINADO LA LLAMADA A setCustomUserClaims DEL ADMIN SDK
+                                    // y la inicialización del Admin SDK, que daban los errores.
+                                    val userRoleData = mapOf(
+                                        "email" to user.email,
+                                        "role" to "user", // Asignamos el rol "user" por defecto
+                                        "username" to username
+                                    )
+
+                                    // Escribir en Firestore usando la instancia 'db' del SDK de cliente
+                                    // Asegúrate de que el nombre de la colección ("userRoles") coincide con tu Firestore
+                                    // O si tus colecciones son "users" y "admins", podrías querer escribir en "users"
+                                    // Por ejemplo: db.collection("users").document(user.uid).set(...)
+                                    db.collection("userRoles").document(user.uid).set(userRoleData)
+                                        .addOnSuccessListener {
+                                            Log.d("Register", "Rol 'user' guardado en Firestore para UID: ${user.uid}")
+                                            // Ahora que todo está hecho, redirigir
+                                            redirectToLogin()
+                                        }
+                                        .addOnFailureListener { e ->
+                                            Log.e("Register", "Error guardando rol en Firestore: ${e.message}", e)
+                                            Toast.makeText(this, "Error: No se pudo guardar el rol en Firestore.", Toast.LENGTH_LONG).show()
+                                            // Redirigir de todos modos, pero el rol puede no estar disponible
+                                            redirectToLogin()
+                                        }
+
                                 } else {
+                                    Log.e("Register", "Registro exitoso, pero no se pudo actualizar el nombre de usuario.")
                                     Toast.makeText(this, "Registro exitoso, pero no se pudo actualizar el nombre de usuario.", Toast.LENGTH_LONG).show()
-                                    // Si no se puede actualizar el perfil, aún así puedes redirigir
-                                    val intent = Intent(this, LoginActivity::class.java) // <--- ¡CAMBIO AQUÍ!
-                                    startActivity(intent)
-                                    finish()
+                                    redirectToLogin() // Redirigir de todos modos
                                 }
                             }
                     } else {
+                        Log.e("Register", "Registro exitoso, pero el usuario es nulo.")
                         Toast.makeText(this, "Registro exitoso, pero el usuario es nulo.", Toast.LENGTH_LONG).show()
-                        val intent = Intent(this, LoginActivity::class.java) // <--- ¡CAMBIO AQUÍ!
-                        startActivity(intent)
-                        finish()
+                        redirectToLogin()
                     }
                 } else {
                     val errorMessage = task.exception?.message ?: "Error desconocido al registrar."
+                    Log.e("Register", "Error en el registro: $errorMessage")
                     Toast.makeText(this, "Error en el registro: $errorMessage", Toast.LENGTH_LONG).show()
                 }
             }
     }
 
-    // Opcional: Esto se ejecuta al inicio de la actividad.
-    // Si ya hay un usuario logueado, podrías redirigirlo automáticamente,
-    // pero si esta es una actividad de REGISTRO, normalmente no lo harías
-    // a menos que sea una pantalla de inicio donde se maneje tanto el login como el registro.
-    // Si la intención de esta actividad es *solo* el registro, esta parte no es estrictamente necesaria.
-    /*
-    override fun onStart() {
-        super.onStart()
-        val currentUser: FirebaseUser? = auth.currentUser
-        if (currentUser != null) {
-            // Usuario ya autenticado, redirigir a la pantalla principal (MainActivity)
-            // o a la pantalla de login si el flujo lo requiere.
-            // val intent = Intent(this, MainActivity::class.java)
-            // startActivity(intent)
-            // finish()
-        }
+    private fun redirectToLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
-    */
 }

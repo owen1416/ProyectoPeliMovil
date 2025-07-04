@@ -13,7 +13,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.card.MaterialCardView
 import com.google.firebase.auth.FirebaseAuth
 
-class AdminPeliculasActivity : AppCompatActivity() {
+class AdminDashboard : AppCompatActivity() {
 
     // Declara las vistas aquí para que sean accesibles en toda la clase
     // Esto es útil si vas a acceder a ellas varias veces
@@ -110,19 +110,19 @@ class AdminPeliculasActivity : AppCompatActivity() {
 
         btnManageMovies.setOnClickListener {
             // Lógica para ir a la actividad de gestionar películas
-            val intent = Intent(this, ManageMoviesActivity::class.java) // Asume que tienes ManageMoviesActivity
+            val intent = Intent(this, PeliculasActivity::class.java) // Asume que tienes ManageMoviesActivity
             startActivity(intent)
         }
 
         btnManageUsers.setOnClickListener {
             // Lógica para ir a la actividad de gestionar usuarios
-            val intent = Intent(this, ManageUsersActivity::class.java) // Asume que tienes ManageUsersActivity
+            val intent = Intent(this, UserManagementActivity::class.java) // Asume que tienes ManageUsersActivity
             startActivity(intent)
         }
 
         btnManageCategories.setOnClickListener {
             // Lógica para ir a la actividad de gestionar categorías
-            val intent = Intent(this, ManageCategoriesActivity::class.java) // Asume que tienes ManageCategoriesActivity
+            val intent = Intent(this, GenerosActivity::class.java) // Asume que tienes ManageCategoriesActivity
             startActivity(intent)
         }
 

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/netflix_dark"
+    tools:context=".PeliculasActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🎬 Administración de Películas"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/ivory"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/btn_crear_pelicula"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:drawablePadding="8dp"
+        android:padding="12dp"
+        android:background="#E50914"
+        android:text="Agregar nueva película"
+        android:textColor="@color/netflix_dark"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btn_leer_peliculas"
+        android:layout_width="377dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:background="#E50914"
+        android:text="🔄"
+        android:textColor="@color/netflix_dark" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_search_pelicula"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Buscar película..."
+        android:textColorHint="@color/ivory"
+        app:boxStrokeColor="@color/nude"
+        app:hintTextColor="@color/nude"
+        app:endIconMode="clear_text"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_marginBottom="12dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_search_pelicula"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/ivory" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_peliculas"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingTop="8dp"
+        android:clipToPadding="false"
+        tools:listitem="@layout/item_pelicula" />
+
+</LinearLayout>

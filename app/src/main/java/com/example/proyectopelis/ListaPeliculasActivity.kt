@@ -1,5 +1,5 @@
 package com.example.proyectopelis
 
-class ManageUsersActivity {
+class ListaPeliculasActivity {
 
 }
