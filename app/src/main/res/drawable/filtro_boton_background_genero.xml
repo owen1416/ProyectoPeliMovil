@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Estado presionado -->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="24dp"/>
+            <solid android:color="@color/baby_blue"/> <!-- Color al presionar -->
+            <stroke android:width="1dp" android:color="@color/baby_blue"/>
+        </shape>
+    </item>
+    <!-- Estado enfocado (por ejemplo, con teclado) -->
+    <item android:state_focused="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="24dp"/>
+            <solid android:color="@color/baby_blue"/> <!-- Color al enfocar -->
+            <stroke android:width="1dp" android:color="@color/baby_blue"/>
+        </shape>
+    </item>
+    <!-- Estado por defecto (no presionado, no enfocado) -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="24dp"/>
+            <solid android:color="@android:color/transparent"/> <!-- Fondo transparente -->
+            <stroke android:width="1dp" android:color="@color/ivory"/> <!-- Borde blanco -->
+        </shape>
+    </item>
+</selector>

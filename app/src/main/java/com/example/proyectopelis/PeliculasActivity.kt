@@ -1,6 +1,5 @@
 package com.example.proyectopelis
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.net.Uri
@@ -28,9 +27,12 @@ import com.example.proyectopelis.Models.Peliculas
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseAuth // Importar FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.Timestamp // Importar Timestamp
+import com.google.firebase.firestore.FieldValue
 import java.util.Calendar
 
 class PeliculasActivity : AppCompatActivity(), OnPeliculaActionListener {
@@ -46,18 +48,24 @@ class PeliculasActivity : AppCompatActivity(), OnPeliculaActionListener {
     private var allGenerosList: List<Generos> = emptyList()
     private var generosMap: Map<String, String> = emptyMap()
 
+    private lateinit var auth: FirebaseAuth // Declarar FirebaseAuth
+    private var currentUserId: String? = null // Para almacenar el ID del usuario actual
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_peliculas)
 
         db = Firebase.firestore
+        auth = FirebaseAuth.getInstance() // Inicializar FirebaseAuth
+        currentUserId = auth.currentUser?.uid // Obtener el ID del usuario logueado
 
         rvPeliculas = findViewById(R.id.rv_peliculas)
         btnCrearPelicula = findViewById(R.id.btn_crear_pelicula)
         btnRecargarLista = findViewById(R.id.btn_leer_peliculas)
         etSearchPelicula = findViewById(R.id.et_search_pelicula)
 
-        peliculasAdapter = PeliculasAdapter(emptyList(), this, emptyMap())
+        // IMPORTANTE: Pasar el currentUserId al adaptador
+        peliculasAdapter = PeliculasAdapter(emptyList(), this, emptyMap(), currentUserId)
         rvPeliculas.layoutManager = LinearLayoutManager(this)
         rvPeliculas.adapter = peliculasAdapter
 
@@ -120,14 +128,28 @@ class PeliculasActivity : AppCompatActivity(), OnPeliculaActionListener {
             }
     }
 
-    // MODIFICAR actualizarPelicula para incluir el campo isFavorite
+    // MODIFICAR actualizarPelicula para usar los campos de tu Peliculas data class
     private fun actualizarPelicula(peliculaId: String, pelicula: Peliculas) {
+        // Crear un mapa solo con los campos que se deben actualizar desde este formulario
+        val updates = mapOf(
+            "titulo" to pelicula.titulo,
+            "descripcion" to pelicula.descripcion,
+            "anio" to pelicula.anio,
+            "director" to pelicula.director,
+            "duracionMinutos" to pelicula.duracionMinutos,
+            "generoId" to pelicula.generoId,
+            "imageUrl" to pelicula.imageUrl, // ¡Corregido a imageUrl!
+            "trailerUrl" to pelicula.trailerUrl,
+            "fechaLanzamiento" to pelicula.fechaLanzamiento
+            // NO INCLUIR 'favoriteCount' AQUÍ, lo gestiona la Cloud Function
+        )
+
         db.collection("peliculas").document(peliculaId)
-            .set(pelicula) // set(pelicula) reemplaza el documento
+            .update(updates) // Usar update() para actualizar solo los campos especificados
             .addOnSuccessListener {
                 Log.d("PeliculasActivity", "Película $peliculaId actualizada.")
                 Toast.makeText(this, "Película actualizada.", Toast.LENGTH_SHORT).show()
-                leerPeliculas()
+                leerPeliculas() // Recargar la lista para reflejar los cambios
             }
             .addOnFailureListener { e ->
                 Log.w("PeliculasActivity", "Error al actualizar película", e)
@@ -186,8 +208,8 @@ class PeliculasActivity : AppCompatActivity(), OnPeliculaActionListener {
             allPeliculasList
         } else {
             allPeliculasList.filter {
-                it.titulo.contains(query, ignoreCase = true) ||
-                        it.director.contains(query, ignoreCase = true) ||
+                it.titulo.contains(query, ignoreCase = true) || // .titulo ahora no es nullable
+                        it.director.contains(query, ignoreCase = true) || // .director ahora no es nullable
                         (it.generoId?.let { generosMap[it]?.contains(query, ignoreCase = true) } == true)
             }
         }
@@ -205,21 +227,42 @@ class PeliculasActivity : AppCompatActivity(), OnPeliculaActionListener {
     }
 
     override fun onPeliculaClick(pelicula: Peliculas, generoNombre: String?) {
-        Toast.makeText(this, "Has clicado en: ${pelicula.titulo} (Género: $generoNombre)", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Has clicado en: ${pelicula.titulo} (Género: ${generoNombre ?: "N/A"})", Toast.LENGTH_SHORT).show()
     }
 
-    // NUEVO MÉTODO: Manejar el clic en el botón de favorito
-    override fun onFavoriteClick(pelicula: Peliculas, isFavorite: Boolean) {
-        val updatedPelicula = pelicula.copy(isFavorite = isFavorite) // Crea una copia con el nuevo estado
-        pelicula.id?.let { id ->
-            actualizarPelicula(id, updatedPelicula) // Actualiza en Firestore
-            val message = if (isFavorite) "Añadida a favoritos" else "Eliminada de favoritos"
-            Toast.makeText(this, "${pelicula.titulo} $message", Toast.LENGTH_SHORT).show()
-        } ?: run {
-            Toast.makeText(this, "Error: ID de película no encontrado para actualizar favorito.", Toast.LENGTH_SHORT).show()
+    override fun onFavoriteClick(peliculaId: String, isFavorite: Boolean, userId: String) {
+        val peliculaDocRef = db.collection("peliculas").document(peliculaId)
+
+        if (isFavorite) {
+            // Incrementar favoriteCount y añadir subdocumento de favorito
+            val favoriteRef = peliculaDocRef.collection("favorites").document(userId)
+            db.runBatch { batch ->
+                batch.update(peliculaDocRef, "favoriteCount", FieldValue.increment(1))
+                batch.set(favoriteRef, mapOf("timestamp" to Timestamp.now()))
+            }.addOnSuccessListener {
+                Log.d("PeliculasActivity", "Favorito agregado y contador incrementado")
+                Toast.makeText(this, "Añadida a favoritos", Toast.LENGTH_SHORT).show()
+                peliculasAdapter.updatePeliculaFavoriteStatus(peliculaId, true)
+            }.addOnFailureListener { e ->
+                Log.e("PeliculasActivity", "Error marcando favorito o incrementando: ${e.message}", e)
+                Toast.makeText(this, "Error al marcar favorito", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            // Decrementar favoriteCount y eliminar subdocumento de favorito
+            val favoriteRef = peliculaDocRef.collection("favorites").document(userId)
+            db.runBatch { batch ->
+                batch.update(peliculaDocRef, "favoriteCount", FieldValue.increment(-1))
+                batch.delete(favoriteRef)
+            }.addOnSuccessListener {
+                Log.d("PeliculasActivity", "Favorito eliminado y contador decrementado")
+                Toast.makeText(this, "Eliminado de favoritos", Toast.LENGTH_SHORT).show()
+                peliculasAdapter.updatePeliculaFavoriteStatus(peliculaId, false)
+            }.addOnFailureListener { e ->
+                Log.e("PeliculasActivity", "Error eliminando favorito o decrementando: ${e.message}", e)
+                Toast.makeText(this, "Error al eliminar favorito", Toast.LENGTH_SHORT).show()
+            }
         }
     }
-
     // --- MÉTODOS PARA MOSTRAR LOS DIÁLOGOS ---
 
     private fun mostrarDialogoFormularioPelicula(pelicula: Peliculas?) {
@@ -261,7 +304,7 @@ class PeliculasActivity : AppCompatActivity(), OnPeliculaActionListener {
             etAnio.setText(pelicula?.anio.toString())
             etDuracion.setText(pelicula?.duracionMinutos.toString())
             etDirector.setText(pelicula?.director)
-            etImageUrl.setText(pelicula?.imageUrl)
+            etImageUrl.setText(pelicula?.imageUrl) // ¡Usar imageUrl!
             etTrailerUrl.setText(pelicula?.trailerUrl)
             etFechaLanzamiento.setText(pelicula?.fechaLanzamiento)
 
@@ -289,6 +332,7 @@ class PeliculasActivity : AppCompatActivity(), OnPeliculaActionListener {
                     return@setPositiveButton
                 }
 
+                // Usar toIntOrNull para anio y duracion
                 val anio = anioStr.toIntOrNull()
                 val duracion = duracionStr.toIntOrNull()
 
@@ -314,10 +358,11 @@ class PeliculasActivity : AppCompatActivity(), OnPeliculaActionListener {
                     director = director,
                     duracionMinutos = duracion,
                     generoId = generoId,
-                    imageUrl = imageUrl.ifEmpty { null },
+                    imageUrl = imageUrl.ifEmpty { null }, // ¡Usar imageUrl!
                     trailerUrl = trailerUrl.ifEmpty { null },
-                    fechaLanzamiento = fechaLanzamiento.ifEmpty { null },
-                    isFavorite = pelicula?.isFavorite ?: false // Conserva el estado de favorito al editar
+                    fechaLanzamiento = fechaLanzamiento.ifEmpty { null }
+                    // NO ES NECESARIO favoriteCount aquí, se inicializa por defecto en el modelo a 0
+                    // y es actualizado por Cloud Functions
                 )
 
                 if (isEditing && pelicula != null) {

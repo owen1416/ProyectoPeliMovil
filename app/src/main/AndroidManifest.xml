@@ -33,8 +33,11 @@
         <activity android:name=".PeliculasActivity" />
         <activity android:name=".UserManagementActivity" />
         <activity android:name=".ReportsActivity" />
-
-
+        <activity android:name=".CategoryMoviesActivity" />
+        <activity android:name=".UserCategoryActivity" />
+        <activity android:name=".UserListPeliculasActivity" />
+        <activity android:name=".UserPerfilActivity" />
+        <activity android:name=".MovieDetailActivity" />
 
     </application>
 </manifest>

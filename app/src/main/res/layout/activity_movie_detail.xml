@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:padding="0dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Poster de la película como banner completo -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="450dp"> <!-- AUMENTADO -->
+
+            <ImageView
+                android:id="@+id/ivPoster"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:contentDescription="Poster de la película" />
+
+            <!-- Sombra oscura encima del poster para mejor lectura -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#80000000" />
+
+            <!-- Contenedor título + favorito -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom|center_vertical"
+                android:padding="16dp"
+                android:layout_gravity="bottom">
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Título de película"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF" />
+
+                <ImageView
+                    android:id="@+id/ivFavorite"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/heart_regular"
+                    android:contentDescription="Favorito"
+                    android:padding="4dp" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- Datos de la película -->
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Descripción"
+            android:textColor="#DDDDDD"
+            android:layout_margin="12dp" />
+
+        <TextView
+            android:id="@+id/tvYear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Año"
+            android:textColor="#DDDDDD"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:id="@+id/tvDirector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Director"
+            android:textColor="#DDDDDD"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:id="@+id/tvDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Duración"
+            android:textColor="#DDDDDD"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:id="@+id/tvFechaLanzamiento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fecha de lanzamiento"
+            android:textColor="#DDDDDD"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:id="@+id/tvFavoriteCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Favoritos: 0"
+            android:textColor="#DDDDDD"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="4dp" />
+
+        <!-- Trailer -->
+        <WebView
+            android:id="@+id/webTrailer"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="12dp" />
+
+    </LinearLayout>
+</ScrollView>

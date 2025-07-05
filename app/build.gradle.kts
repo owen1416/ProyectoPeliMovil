@@ -16,6 +16,7 @@ android {
         targetSdk = 35 // Manteniendo tu versión de targetSdk
         versionCode = 1
         versionName = "1.0"
+        vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -45,6 +46,9 @@ android {
 
 dependencies {
 
+
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     // Core AndroidX Libraries (preferimos los aliases de libs.versions.toml si están definidos y actualizados)

@@ -6,5 +6,5 @@ interface OnPeliculaActionListener {
     fun onEditClick(pelicula: Peliculas)
     fun onDeleteClick(pelicula: Peliculas)
     fun onPeliculaClick(pelicula: Peliculas, generoNombre: String?)
-    fun onFavoriteClick(pelicula: Peliculas, isFavorite: Boolean) // ¡NUEVO!
+    fun onFavoriteClick(peliculaId: String, isFavorite: Boolean, userId: String) // ¡Esta es la firma correcta!
 }

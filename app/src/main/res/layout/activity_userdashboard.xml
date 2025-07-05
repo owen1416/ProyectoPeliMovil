@@ -2,183 +2,330 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    tools:context=".UserDashboardActivity">
 
-    <ScrollView
-        android:layout_width="match_parent"
+    <!-- Contenedor para la sección de Inicio (tu contenido actual de películas) -->
+    <FrameLayout
+        android:id="@+id/homeContainer"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:fillViewport="true"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <ScrollView
+            android:id="@+id/mainScrollView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-            <!-- 🔍 Buscar -->
-            <EditText
-                android:id="@+id/searchBar"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Buscar películas..."
-                android:drawableStart="@android:drawable/ic_menu_search"
-                android:padding="12dp"
-                android:background="@android:drawable/editbox_background" />
+                android:padding="16dp">
 
-            <!-- 🎭 Géneros -->
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp">
+                <EditText
+                    android:id="@+id/searchBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Buscar películas..."
+                    android:drawableStart="@android:drawable/ic_menu_search"
+                    android:padding="12dp"
+                    android:background="@android:drawable/editbox_background"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:backgroundTint="#333333"/>
 
-                <LinearLayout
-                    android:orientation="horizontal"
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:scrollbars="none">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroupGenres"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:chipSpacingHorizontal="8dp"
+                        app:singleLine="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipAccion"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="?attr/colorPrimary"
+                            android:backgroundTint="?attr/colorPrimary"
+                            android:text="Acción"
+                            android:textColor="@color/white" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipComedia"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="?attr/colorPrimary"
+                            android:backgroundTint="?attr/colorPrimary"
+                            android:text="Comedia"
+                            android:textColor="@color/white" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipDrama"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="?attr/colorPrimary"
+                            android:backgroundTint="?attr/colorPrimary"
+                            android:text="Drama"
+                            android:textColor="@color/white" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipTerror"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="?attr/colorPrimary"
+                            android:backgroundTint="?attr/colorPrimary"
+                            android:text="Terror"
+                            android:textColor="@color/white" />
+                    </com.google.android.material.chip.ChipGroup>
+                </HorizontalScrollView>
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/bannerViewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="16dp"/>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/bannerIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:tabBackground="@drawable/tab_indicator_selector"
+                    app:tabGravity="center"
+                    app:tabIndicatorHeight="0dp"/>
+
+
+                <TextView
+                    android:text="Nuevas Pelis ✨"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"/>
 
-                    <Button
-                        android:text="Acción"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                    <Button
-                        android:text="Comedia"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                    <Button
-                        android:text="Drama"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                    <Button
-                        android:text="Terror"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-            </HorizontalScrollView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerNuevasPelis"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"/>
 
-            <!-- 📸 Banner -->
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/bannerViewPager"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="16dp"/>
+                <TextView
+                    android:text="Acción"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@android:color/white"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/actionRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="160dp"
+                    android:overScrollMode="never"
+                    android:nestedScrollingEnabled="false"
+                    android:clipToPadding="false"
+                    android:paddingBottom="8dp" />
+                <Button
+                    android:id="@+id/btnVerMasAccion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ver más"
+                    android:backgroundTint="?attr/colorPrimary"
+                    android:textColor="@android:color/white"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_gravity="start"/>
 
-            <!-- 🔥 Pelis recientes -->
-            <TextView
-                android:text="Nuevas Pelis ✨"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:paddingTop="16dp"
-                android:paddingBottom="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="Comedia"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@android:color/white"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/comediaRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="160dp"
+                    android:overScrollMode="never"
+                    android:nestedScrollingEnabled="false"
+                    android:clipToPadding="false"
+                    android:paddingBottom="8dp" />
+                <Button
+                    android:id="@+id/btnVerMasComedia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ver más"
+                    android:backgroundTint="?attr/colorPrimary"
+                    android:textColor="@android:color/white"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_gravity="start"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerNuevasPelis"
-                android:layout_width="match_parent"
-                android:layout_height="220dp"/>
+                <TextView
+                    android:text="Drama"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@android:color/white"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/dramaRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="160dp"
+                    android:overScrollMode="never"
+                    android:nestedScrollingEnabled="false"
+                    android:clipToPadding="false"
+                    android:paddingBottom="8dp" />
+                <Button
+                    android:id="@+id/btnVerMasDrama"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ver más"
+                    android:backgroundTint="?attr/colorPrimary"
+                    android:textColor="@android:color/white"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_gravity="start"/>
 
-            <!-- 🧩 Categorías -->
-            <TextView
-                android:text="Acción"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp" />
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/actionRecycler"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="160dp"
-                android:overScrollMode="never"
-                android:nestedScrollingEnabled="false"
-                android:clipToPadding="false"
-                android:paddingBottom="8dp" />
-            <Button
-                android:id="@+id/btnVerMasAccion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ver más" />
+                <TextView
+                    android:text="Terror"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@android:color/white"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/terrorRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="160dp"
+                    android:overScrollMode="never"
+                    android:nestedScrollingEnabled="false"
+                    android:clipToPadding="false"
+                    android:paddingBottom="8dp" />
+                <Button
+                    android:id="@+id/btnVerMasTerror"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ver más"
+                    android:backgroundTint="?attr/colorPrimary"
+                    android:textColor="@android:color/white"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_gravity="start"/>
 
-            <TextView
-                android:text="Comedia"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp" />
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/comediaRecycler"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="160dp"
-                android:overScrollMode="never"
-                android:nestedScrollingEnabled="false"
-                android:clipToPadding="false"
-                android:paddingBottom="8dp" />
-            <Button
-                android:id="@+id/btnVerMasComedia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ver más" />
+                <Button
+                    android:id="@+id/btnLogout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cerrar Sesión"
+                    android:backgroundTint="#E50914"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginTop="24dp"/>
 
-            <TextView
-                android:text="Drama"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp" />
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/dramaRecycler"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="160dp"
-                android:overScrollMode="never"
-                android:nestedScrollingEnabled="false"
-                android:clipToPadding="false"
-                android:paddingBottom="8dp" />
-            <Button
-                android:id="@+id/btnVerMasDrama"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ver más" />
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
 
-            <TextView
-                android:text="Terror"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp" />
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/terrorRecycler"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="160dp"
-                android:overScrollMode="never"
-                android:nestedScrollingEnabled="false"
-                android:clipToPadding="false"
-                android:paddingBottom="8dp" />
-            <Button
-                android:id="@+id/btnVerMasTerror"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ver más" />
+    <!-- Los otros contenedores (search, favorites, profile) se eliminan si no los vas a usar sin la BottomNav -->
+    <!-- Si los necesitas para otra cosa, déjalos, pero su visibilidad se controlará manualmente si no hay BottomNav -->
+    <!-- Por ahora, los dejamos ocultos por si los quieres reutilizar más tarde -->
+    <FrameLayout
+        android:id="@+id/searchContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contenido de Búsqueda"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:layout_gravity="center"/>
+    </FrameLayout>
 
-            <Button
-                android:id="@+id/btnLogout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Cerrar Sesión"
-                android:background="#E50914"
-                android:textColor="#FFFFFF"
-                android:layout_marginTop="24dp"/>
+    <FrameLayout
+        android:id="@+id/favoritesContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contenido de Favoritos"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:layout_gravity="center"/>
+    </FrameLayout>
 
-        </LinearLayout>
-    </ScrollView>
+    <FrameLayout
+        android:id="@+id/profileContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contenido de Perfil"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+
+
+
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/netflix_dark"
+        android:elevation="8dp"
+        app:menu="@menu/bottom_nav_menu"
+        app:itemIconTint="@color/selector_icon_color"
+        app:itemTextColor="@color/selector_icon_color"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:itemActiveIndicatorStyle="@style/BottomNavIndicator" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
