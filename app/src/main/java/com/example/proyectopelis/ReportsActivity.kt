@@ -9,23 +9,25 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.github.mikephil.charting.charts.PieChart
-import com.github.mikephil.charting.charts.BarChart // Importar BarChart
+import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.data.BarData // Importar BarData
-import com.github.mikephil.charting.data.BarDataSet // Importar BarDataSet
-import com.github.mikephil.charting.data.BarEntry // Importar BarEntry
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter // Para formatear etiquetas del eje X
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import android.util.Log
-import android.view.View // Importar View para los círculos de la leyenda
+import android.view.View
 import java.util.Collections // Para ordenar mapas
+import com.example.proyectopelis.Models.Peliculas // Asegúrate de que esta ruta sea correcta para tu modelo Peliculas
+ // Asegúrate de que esta ruta sea correcta para tu modelo User, si lo usas en otros reportes
 
 class ReportsActivity : AppCompatActivity() {
 
@@ -34,13 +36,16 @@ class ReportsActivity : AppCompatActivity() {
     private lateinit var tvTotalUsers: TextView
     private lateinit var tvTotalMovies: TextView
     private lateinit var pieChartMoviesByGenre: PieChart
-    private lateinit var barChartMoviesByYear: BarChart // Declarar el BarChart
+    private lateinit var barChartMoviesByYear: BarChart
     private lateinit var pieChartUsersByRole: PieChart
     private lateinit var btnRefreshReports: MaterialButton
 
     // Referencias a los LinearLayouts para las leyendas
     private lateinit var llMoviesByGenreLegend: LinearLayout
     private lateinit var llUsersByRoleLegend: LinearLayout
+
+    // NUEVO: Declarar el BarChart para películas favoritas
+    private lateinit var barChartTopFavoriteMovies: BarChart
 
     // Colores personalizados para las gráficas (puedes ajustarlos)
     private val chartColors = listOf(
@@ -49,7 +54,10 @@ class ReportsActivity : AppCompatActivity() {
         Color.parseColor("#42A5F5"), // Un azul claro
         Color.parseColor("#FFCA28"), // Un amarillo
         Color.parseColor("#EF5350"), // Un rojo claro
-        Color.parseColor("#66BB6A")  // Un verde
+        Color.parseColor("#66BB6A"), // Un verde
+        Color.parseColor("#FFC107"), // Amarillo ámbar
+        Color.parseColor("#00BCD4"), // Cian
+        Color.parseColor("#FF5722")  // Naranja oscuro
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,19 +70,20 @@ class ReportsActivity : AppCompatActivity() {
         tvTotalUsers = findViewById(R.id.tv_total_users)
         tvTotalMovies = findViewById(R.id.tv_total_movies)
         pieChartMoviesByGenre = findViewById(R.id.pie_chart_movies_by_genre)
-        barChartMoviesByYear = findViewById(R.id.bar_chart_movies_by_year) // Inicializar el BarChart
+        barChartMoviesByYear = findViewById(R.id.bar_chart_movies_by_year)
         pieChartUsersByRole = findViewById(R.id.pie_chart_users_by_role)
         btnRefreshReports = findViewById(R.id.btn_refresh_reports)
 
-        // Inicialización de los LinearLayouts de leyenda con los IDs CORRECTOS
         llMoviesByGenreLegend = findViewById(R.id.ll_movies_by_genre_legend)
         llUsersByRoleLegend = findViewById(R.id.ll_users_by_role_legend)
+
+        // NUEVO: Inicializar el BarChart para películas favoritas
+        barChartTopFavoriteMovies = findViewById(R.id.bar_chart_top_favorite_movies)
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Reportes y Estadísticas"
 
-        // Configurar el botón de refrescar
         btnRefreshReports.setOnClickListener {
             loadReports()
             Toast.makeText(this, "Reportes actualizados", Toast.LENGTH_SHORT).show()
@@ -83,7 +92,8 @@ class ReportsActivity : AppCompatActivity() {
         // Configuración inicial de las gráficas
         setupPieChart(pieChartMoviesByGenre, "Distribución de Géneros")
         setupPieChart(pieChartUsersByRole, "Distribución de Roles")
-        setupBarChart(barChartMoviesByYear, "Películas por Año") // Configurar el BarChart
+        setupBarChart(barChartMoviesByYear, "Películas por Año")
+        setupBarChart(barChartTopFavoriteMovies, "Top Películas Favoritas") // NUEVO: Configurar el BarChart de favoritos
 
         loadReports()
     }
@@ -102,32 +112,26 @@ class ReportsActivity : AppCompatActivity() {
         pieChart.setExtraOffsets(5f, 10f, 5f, 5f)
         pieChart.dragDecelerationFrictionCoef = 0.95f
         pieChart.isDrawHoleEnabled = true
-        pieChart.setHoleColor(Color.WHITE) // Fondo del centro del pastel
+        pieChart.setHoleColor(Color.WHITE)
         pieChart.setTransparentCircleColor(Color.WHITE)
         pieChart.setTransparentCircleAlpha(110)
         pieChart.holeRadius = 58f
         pieChart.transparentCircleRadius = 61f
         pieChart.setDrawCenterText(true)
-        pieChart.setCenterText(descriptionText) // Texto en el centro del pastel
-        pieChart.setCenterTextColor(Color.BLACK) // Color del texto central
-        pieChart.setCenterTextSize(18f) // Tamaño del texto central
+        pieChart.setCenterText(descriptionText)
+        pieChart.setCenterTextColor(Color.BLACK)
+        pieChart.setCenterTextSize(18f)
         pieChart.rotationAngle = 0f
         pieChart.isRotationEnabled = true
-        // pieChart.highlightPerTapEnabled = true // Línea eliminada
-
-        // Configuración de la leyenda
-        pieChart.legend.isEnabled = false // Deshabilitar la leyenda por defecto de la gráfica
-        // Si necesitas una leyenda personalizada, la puedes construir en el LinearLayout
-
-        // Deshabilitar la entrada táctil si no quieres interactividad
-        // pieChart.setTouchEnabled(false)
+        pieChart.legend.isEnabled = false
     }
 
     private fun setupBarChart(barChart: BarChart, descriptionText: String) {
         barChart.description.isEnabled = false
-        barChart.setPinchZoom(false) // Deshabilitar el zoom de pellizco
+        barChart.setPinchZoom(false)
         barChart.setDrawBarShadow(false)
         barChart.setDrawGridBackground(false)
+        barChart.setBackgroundColor(Color.WHITE) // Establecer el fondo de la gráfica a blanco
 
         // Configuración del eje X
         val xAxis = barChart.xAxis
@@ -136,7 +140,7 @@ class ReportsActivity : AppCompatActivity() {
         xAxis.setDrawAxisLine(true)
         xAxis.textColor = Color.BLACK
         xAxis.textSize = 10f
-        xAxis.granularity = 1f // Solo mostrar valores enteros
+        xAxis.granularity = 1f
 
         // Configuración del eje Y izquierdo
         val leftAxis = barChart.axisLeft
@@ -144,14 +148,15 @@ class ReportsActivity : AppCompatActivity() {
         leftAxis.textColor = Color.BLACK
         leftAxis.textSize = 10f
         leftAxis.setDrawGridLines(true)
+        leftAxis.gridColor = Color.LTGRAY // Color de las líneas de la cuadrícula
         leftAxis.setDrawAxisLine(true)
-        leftAxis.axisMinimum = 0f // Empezar desde 0
+        leftAxis.axisMinimum = 0f
 
         // Deshabilitar el eje Y derecho
         barChart.axisRight.isEnabled = false
 
         // Configuración de la leyenda
-        barChart.legend.isEnabled = false // Deshabilitar la leyenda por defecto
+        barChart.legend.isEnabled = false
 
         // Animación
         barChart.animateY(1500)
@@ -171,7 +176,7 @@ class ReportsActivity : AppCompatActivity() {
                     usersByRole[role] = (usersByRole[role] ?: 0) + 1
                 }
                 updateUsersByRoleChart(usersByRole)
-                displayUsersByRoleLegend(usersByRole) // Actualizar la leyenda manual
+                displayUsersByRoleLegend(usersByRole)
             }
             .addOnFailureListener { e ->
                 Log.e("ReportsActivity", "Error al cargar usuarios para reportes: ${e.message}", e)
@@ -186,7 +191,11 @@ class ReportsActivity : AppCompatActivity() {
                 tvTotalMovies.text = "Total de Películas: $totalMovies"
 
                 val moviesByGenre = mutableMapOf<String, Int>()
-                val moviesByYear = mutableMapOf<Int, Int>() // Nuevo mapa para años
+                val moviesByYear = mutableMapOf<Int, Int>()
+
+                // NUEVO: Mapa para contar favoritos
+                val favoriteMovieCounts = mutableMapOf<String, Int>()
+
 
                 db.collection("generos")
                     .get()
@@ -202,17 +211,28 @@ class ReportsActivity : AppCompatActivity() {
                             val genreName = genreNamesMap[genreId] ?: "Género Desconocido"
                             moviesByGenre[genreName] = (moviesByGenre[genreName] ?: 0) + 1
 
-                            // Para películas por año (asumiendo campo 'anio' como Long o Int)
-                            val releaseYear = document.getLong("anio")?.toInt() // Usar "anio" como el campo del año
+                            // Para películas por año
+                            val releaseYear = document.getLong("anio")?.toInt()
                             if (releaseYear != null) {
                                 moviesByYear[releaseYear] = (moviesByYear[releaseYear] ?: 0) + 1
                             } else {
                                 Log.w("ReportsActivity", "Documento de película sin campo 'anio' o no es un número: ${document.id}")
                             }
+
+                            // NUEVO: Para películas favoritas
+                            val pelicula = document.toObject(Peliculas::class.java)
+                            if (pelicula.isFavorite) { // Asegúrate de que Peliculas.kt tiene 'isFavorite: Boolean'
+                                val title = pelicula.titulo ?: "Título Desconocido"
+                                favoriteMovieCounts[title] = favoriteMovieCounts.getOrDefault(title, 0) + 1
+                            }
                         }
                         updateMoviesByGenreChart(moviesByGenre)
-                        displayMoviesByGenreLegend(moviesByGenre) // Actualizar la leyenda manual
-                        updateMoviesByYearBarChart(moviesByYear) // Actualizar el BarChart
+                        displayMoviesByGenreLegend(moviesByGenre)
+                        updateMoviesByYearBarChart(moviesByYear)
+
+                        // ¡NUEVO: Llamar a la función para actualizar la gráfica de favoritos!
+                        updateTopFavoriteMoviesChart(favoriteMovieCounts)
+
                     }
                     .addOnFailureListener { e ->
                         Log.e("ReportsActivity", "Error al cargar nombres de géneros para reportes: ${e.message}", e)
@@ -241,7 +261,7 @@ class ReportsActivity : AppCompatActivity() {
         val dataSet = PieDataSet(entries, "Géneros de Películas")
         dataSet.sliceSpace = 3f
         dataSet.selectionShift = 5f
-        dataSet.colors = chartColors // Usar los colores personalizados
+        dataSet.colors = chartColors
         dataSet.valueLinePart1OffsetPercentage = 80f
         dataSet.valueLinePart1Length = 0.2f
         dataSet.valueLinePart2Length = 0.4f
@@ -250,19 +270,20 @@ class ReportsActivity : AppCompatActivity() {
         val data = PieData(dataSet)
         data.setValueFormatter(PercentFormatter(pieChartMoviesByGenre))
         data.setValueTextSize(12f)
-        data.setValueTextColor(Color.BLACK) // Color del texto de los valores
+        data.setValueTextColor(Color.BLACK)
         pieChartMoviesByGenre.data = data
-        pieChartMoviesByGenre.invalidate() // Refrescar la gráfica
-        pieChartMoviesByGenre.animateY(1400) // Animación
+        pieChartMoviesByGenre.invalidate()
+        pieChartMoviesByGenre.animateY(1400)
     }
 
     private fun updateMoviesByYearBarChart(moviesByYear: Map<Int, Int>) {
         val entries = ArrayList<BarEntry>()
-        val years = moviesByYear.keys.sorted() // Ordenar años para el eje X
+        val years = moviesByYear.keys.sorted()
 
         if (years.isEmpty()) {
             barChartMoviesByYear.clear()
             barChartMoviesByYear.setNoDataText("Sin datos de películas por año.")
+            barChartMoviesByYear.setNoDataTextColor(Color.GRAY)
             barChartMoviesByYear.invalidate()
             return
         }
@@ -274,21 +295,19 @@ class ReportsActivity : AppCompatActivity() {
         }
 
         val dataSet = BarDataSet(entries, "Películas por Año")
-        dataSet.colors = chartColors // Reutilizar los colores
+        dataSet.colors = chartColors
         dataSet.valueTextColor = Color.BLACK
         dataSet.valueTextSize = 10f
 
         val data = BarData(dataSet)
-        data.barWidth = 0.9f // Ancho de las barras
+        data.barWidth = 0.9f
 
         barChartMoviesByYear.data = data
 
-        // Formatear las etiquetas del eje X para mostrar los años
         barChartMoviesByYear.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabels)
-        barChartMoviesByYear.xAxis.setLabelCount(xAxisLabels.size, false) // Asegurarse de que todas las etiquetas se muestren
-
-        barChartMoviesByYear.invalidate() // Refrescar la gráfica
-        barChartMoviesByYear.animateY(1500) // Animación
+        barChartMoviesByYear.xAxis.setLabelCount(xAxisLabels.size, false)
+        barChartMoviesByYear.invalidate()
+        barChartMoviesByYear.animateY(1500)
     }
 
     private fun updateUsersByRoleChart(usersByRole: Map<String, Int>) {
@@ -308,7 +327,7 @@ class ReportsActivity : AppCompatActivity() {
         val dataSet = PieDataSet(entries, "Roles de Usuarios")
         dataSet.sliceSpace = 3f
         dataSet.selectionShift = 5f
-        dataSet.colors = chartColors // Usar los colores personalizados
+        dataSet.colors = chartColors
         dataSet.valueLinePart1OffsetPercentage = 80f
         dataSet.valueLinePart1Length = 0.2f
         dataSet.valueLinePart2Length = 0.4f
@@ -317,15 +336,15 @@ class ReportsActivity : AppCompatActivity() {
         val data = PieData(dataSet)
         data.setValueFormatter(PercentFormatter(pieChartUsersByRole))
         data.setValueTextSize(12f)
-        data.setValueTextColor(Color.BLACK) // Color del texto de los valores
+        data.setValueTextColor(Color.BLACK)
         pieChartUsersByRole.data = data
-        pieChartUsersByRole.invalidate() // Refrescar la gráfica
-        pieChartUsersByRole.animateY(1400) // Animación
+        pieChartUsersByRole.invalidate()
+        pieChartUsersByRole.animateY(1400)
     }
 
-    // Funciones para mostrar la leyenda manualmente
+    // Funciones para mostrar la leyenda manualmente (ya existentes)
     private fun displayMoviesByGenreLegend(moviesByGenre: Map<String, Int>) {
-        llMoviesByGenreLegend.removeAllViews() // Limpiar vistas anteriores
+        llMoviesByGenreLegend.removeAllViews()
         if (moviesByGenre.isEmpty()) {
             val tv = TextView(this)
             tv.text = "No hay datos de géneros para mostrar."
@@ -340,12 +359,12 @@ class ReportsActivity : AppCompatActivity() {
             val rowLayout = LinearLayout(this)
             rowLayout.orientation = LinearLayout.HORIZONTAL
             rowLayout.gravity = android.view.Gravity.CENTER_VERTICAL
-            rowLayout.setPadding(0, 0, 0, 8) // Padding inferior para cada fila
+            rowLayout.setPadding(0, 0, 0, 8)
 
             val colorCircle = View(this)
-            val size = (resources.displayMetrics.density * 16).toInt() // 16dp
+            val size = (resources.displayMetrics.density * 16).toInt()
             val layoutParams = LinearLayout.LayoutParams(size, size)
-            layoutParams.marginEnd = (resources.displayMetrics.density * 8).toInt() // 8dp margin
+            layoutParams.marginEnd = (resources.displayMetrics.density * 8).toInt()
             colorCircle.layoutParams = layoutParams
             colorCircle.background = resources.getDrawable(R.drawable.circle_shape, null)
             colorCircle.background.setTint(chartColors[colorIndex % chartColors.size])
@@ -364,7 +383,7 @@ class ReportsActivity : AppCompatActivity() {
     }
 
     private fun displayUsersByRoleLegend(usersByRole: Map<String, Int>) {
-        llUsersByRoleLegend.removeAllViews() // Limpiar vistas anteriores
+        llUsersByRoleLegend.removeAllViews()
         if (usersByRole.isEmpty()) {
             val tv = TextView(this)
             tv.text = "No hay datos de roles para mostrar."
@@ -379,12 +398,12 @@ class ReportsActivity : AppCompatActivity() {
             val rowLayout = LinearLayout(this)
             rowLayout.orientation = LinearLayout.HORIZONTAL
             rowLayout.gravity = android.view.Gravity.CENTER_VERTICAL
-            rowLayout.setPadding(0, 0, 0, 8) // Padding inferior para cada fila
+            rowLayout.setPadding(0, 0, 0, 8)
 
             val colorCircle = View(this)
-            val size = (resources.displayMetrics.density * 16).toInt() // 16dp
+            val size = (resources.displayMetrics.density * 16).toInt()
             val layoutParams = LinearLayout.LayoutParams(size, size)
-            layoutParams.marginEnd = (resources.displayMetrics.density * 8).toInt() // 8dp margin
+            layoutParams.marginEnd = (resources.displayMetrics.density * 8).toInt()
             colorCircle.layoutParams = layoutParams
             colorCircle.background = resources.getDrawable(R.drawable.circle_shape, null)
             colorCircle.background.setTint(chartColors[colorIndex % chartColors.size])
@@ -401,5 +420,58 @@ class ReportsActivity : AppCompatActivity() {
 
             colorIndex++
         }
+    }
+
+    // NUEVO: Función para actualizar la gráfica de Top Películas Favoritas
+    private fun updateTopFavoriteMoviesChart(favoriteMovieCounts: Map<String, Int>) {
+        val entries = ArrayList<BarEntry>()
+        val labels = ArrayList<String>()
+
+        // Ordenar las películas por el número de favoritos (descendente)
+        val sortedFavoriteMovies = favoriteMovieCounts.entries.sortedByDescending { it.value }
+
+        // Limitar a las 10 películas más favoritas
+        val topMovies = sortedFavoriteMovies.take(10)
+
+        if (topMovies.isEmpty()) {
+            barChartTopFavoriteMovies.clear()
+            barChartTopFavoriteMovies.setNoDataText("No hay películas marcadas como favoritas todavía.")
+            barChartTopFavoriteMovies.setNoDataTextColor(Color.GRAY)
+            barChartTopFavoriteMovies.invalidate()
+            return
+        }
+
+        for ((index, entry) in topMovies.withIndex()) {
+            entries.add(BarEntry(index.toFloat(), entry.value.toFloat()))
+            labels.add(entry.key)
+        }
+
+        val dataSet = BarDataSet(entries, "Número de Favoritos")
+        dataSet.colors = chartColors // Reutilizar tus colores personalizados
+        dataSet.valueTextColor = Color.BLACK
+        dataSet.valueTextSize = 10f
+
+        val data = BarData(dataSet)
+        data.barWidth = 0.9f
+
+        barChartTopFavoriteMovies.data = data
+
+        // Configuración específica del eje X para las etiquetas de las películas
+        val xAxis = barChartTopFavoriteMovies.xAxis
+        xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+        xAxis.position = com.github.mikephil.charting.components.XAxis.XAxisPosition.BOTTOM
+        xAxis.granularity = 1f
+        xAxis.setCenterAxisLabels(true) // Centrar etiquetas si es apropiado
+        xAxis.textColor = Color.BLACK
+        xAxis.textSize = 10f
+        xAxis.setDrawGridLines(false)
+        xAxis.setLabelCount(labels.size, false) // Asegura que todas las etiquetas se muestren
+
+        // Configuración del eje Y (ya debería estar configurado por setupBarChart)
+        val leftAxis = barChartTopFavoriteMovies.axisLeft
+        leftAxis.axisMinimum = 0f // Asegurarse de que el mínimo sea 0
+
+        barChartTopFavoriteMovies.invalidate()
+        barChartTopFavoriteMovies.animateY(1500)
     }
 }

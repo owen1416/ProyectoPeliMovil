@@ -18,6 +18,7 @@ data class Peliculas(
     var generoId: String? = null,
     var imageUrl: String? = null,
     var trailerUrl: String? = null,
-    var fechaLanzamiento: String? = null // ¡NUEVO CAMPO! Formato: YYYY-MM-DD
+    var fechaLanzamiento: String? = null, // ¡NUEVO CAMPO! Formato: YYYY-MM-DD
+    var isFavorite: Boolean = false // ¡NUEVO CAMPO!
 
 ): Parcelable

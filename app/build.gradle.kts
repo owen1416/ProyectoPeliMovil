@@ -46,6 +46,7 @@ android {
 dependencies {
 
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     // Core AndroidX Libraries (preferimos los aliases de libs.versions.toml si están definidos y actualizados)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
